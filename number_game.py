@@ -24,7 +24,7 @@ def loose(num_ot, tried):
         noun = 'try'
     sentence = 'Luck has been bad to you this time - your guess was wrong. You have {} more {}!'.format(tries_left, noun)
     if tried == num_ot:
-        sentence = 'Unsuccessfully you ran out of tries and hence must loose! But only for now...\nAnd no reward either! Come by tomorrow!'
+        sentence = 'Unsuccessfully you ran out of tries and hence must loose! But only for now...\nAnd no reward either! Come by tomorrow!\n'
     print(sentence)
 
 # accepts user input
@@ -38,6 +38,10 @@ def get_input(num_ot, comp_g):
             tried += 1
             loose(num_ot, tried)
         else:
+            if comp_g > u_in:
+                print('The guessed number is higher than the one you guessed.\n')
+            elif comp_g < u_in:
+                print('The guessed number is lower than the one you guessed.\n')
             if comp_g == u_in:
                 win(tried)
                 break
@@ -69,4 +73,13 @@ def main():
 
 # starts the app
 main()
+
+while True:
+    another_round = input('Would you like to play one more time? (y/n)').upper()
+    if another_round == 'Y' or another_round == 'YES':
+        main()
+    elif another_round == 'N' or another_round == 'NO':
+        break
+    else:
+        continue
 print('\n')

@@ -1,4 +1,8 @@
 import random
+import os
+
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
 
 def get_rank(tried):
     if tried == 0 or tried == 1:
@@ -19,25 +23,37 @@ def win(tried):
 def loose():
     print('Unsuccessfully computer ran out of tries and hence must loose forever!\n')
 
+def guess_proper(guesses, number):
+    if guesses.count(number) >= 1:
+        return False
+    else:
+        return True
+
 # accepts user input
 def computer_guess(min, max, num_ot, user_g):
     guesses = []
     while len(guesses) < num_ot:
+        print(guesses)
         comp_g = random.randint(min, max)
+        while not guess_proper(guesses, comp_g):
+            comp_g = random.randint(min, max)
         if comp_g > user_g:
             print('Computer went heigher with {}.\n'.format(comp_g))
+            max = comp_g
         elif comp_g < user_g:
             print('Computer went lower with {}.\n'.format(comp_g))
+            min = comp_g
         if comp_g == user_g:
             win(len(guesses))
             break
-        else:
+        if len(guesses) == num_ot - 1:
             loose()
         guesses.append(comp_g)
-        print(guesses)
 
 # sets the game
 def set_game(min, max, num_ot, comp_g):
+
+    cls()
 
     print('Oh, noble user! Computer has {} tries to guess your number!\n'.format(num_ot))
 

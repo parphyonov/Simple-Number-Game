@@ -1,40 +1,72 @@
 import random
 
-wrong_input_message = 'The input is wrong. The game terminates.'
-win_message = 'Computer hit!'
-loose_message_h = 'Computer misses higher with {}'
-loose_message_l = 'Computer misses lower with {}'
+def get_rank(tried):
+    if tried == 0 or tried == 1:
+        reward = 'the Golden Crown!\n👑\n'
+    elif tried == 2:
+        reward = 'the Silver Ring!\n💍\n'
+    elif tried == 3 or tried == 4:
+        reward = 'the Bronze Medal!\n🥉\n'
+    print('And it is ranked with {}'.format(reward))
 
-guesses = []
+def win(tried):
+    noun = 'tries'
+    if tried == 1:
+        noun = 'try'
+    print('\nCongratulate your honoured machine! It won having spent only {} {}!!!'.format(tried, noun))
+    get_rank(tried)
 
-# guess the number
-try:
-    my_guess = int(input('Please, guess a number from 1 to 10:\n>'))
-except ValueError:
-    print(wrong_input_message)
-else:
-    if my_guess < 1 or my_guess > 10:
-        print(wrong_input_message)
+def loose():
+    print('Unsuccessfully computer ran out of tries and hence must loose forever!\n')
+
+# accepts user input
+def computer_guess(min, max, num_ot, user_g):
+    guesses = []
+    while len(guesses) < num_ot:
+        comp_g = random.randint(min, max)
+        if comp_g > user_g:
+            print('Computer went heigher with {}.\n'.format(comp_g))
+        elif comp_g < user_g:
+            print('Computer went lower with {}.\n'.format(comp_g))
+        if comp_g == user_g:
+            win(len(guesses))
+            break
+        else:
+            loose()
+        guesses.append(comp_g)
+        print(guesses)
+
+# sets the game
+def set_game(min, max, num_ot, comp_g):
+
+    print('Oh, noble user! Computer has {} tries to guess your number!\n'.format(num_ot))
+
+    guesses = []
+
+    computer_guess(min, max, num_ot, comp_g)
+
+# sets the values for the game and provides them to the game
+def main():
+
+    # inclusive
+    min = 1
+    # inclusive
+    max = 10
+    # number of tries
+    num_ot = 5
+    # computer guess, stays the same throughout the game
+    user_g = int(input('Please, guess a number from 1 to 10:\n>'))
+
+    # setting up the game
+    set_game(min, max, num_ot, user_g)
+
+# starts the app
+main()
+
+while True:
+    another_run = input('Would you like to guess agains computer one more time? (Y/n)\n>')
+    if another_run != 'n':
+        main()
     else:
-        min = 1
-        max = 10
-        while len(guesses) < 5:
-            # let the computer to guess the number
-            c_guess = random.randint(min, max)
-            # if the number matches display winning message
-            if c_guess == my_guess:
-                print(win_message)
-                break
-            # if the number is higher let the computer guess in that direction
-            elif c_guess > my_guess:
-                print(loose_message_h.format(c_guess))
-                max = c_guess
-            # if the number is lower let the computer guess in that direction
-            else:
-                print(loose_message_l.format(c_guess))
-                min = c_guess
-            guesses.append(c_guess)
-    if len(guesses) == 5:
-        print('\nComputer lost!')
-    else:
-        print('\nComputer won!')
+        break
+print('\n')
